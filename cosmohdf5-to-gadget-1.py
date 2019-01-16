@@ -1,11 +1,14 @@
-""" This script converts a FastPM snapshot to a Gadget-1 snapshot.
+""" This script converts a DESI CosmoSIM WG's HDF5 snapshot to a Gadget-1 snapshot.
 
-    Three blocks are converted, position, velocity and ID>
+    Three blocks are converted, position, velocity and ParitlceID
 
     precision of position and velocity is controled via --precision
     ID is always 8 bytes long.
 
     The default is 1 million particles per file. Change it to something bigger
+
+    This file is minimally modified from bigfile-to-gadget-1.py from FastPM.
+
 """
 
 from argparse import ArgumentParser
