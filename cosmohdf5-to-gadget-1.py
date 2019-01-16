@@ -62,10 +62,12 @@ def make_gadget_header(header):
     gadget = numpy.zeros((), dtype=DefaultHeaderDtype)
     gadget['Time']  = 1 / (attrs['Redshift'] + 1)
     gadget['Redshift']  = attrs['Redshift']
-    gadget['Nall'] = numpy.uint32(attrs['NP_Total'])
-    gadget['NallHW'] = numpy.uint32(attrs['NP_Total'] >> 32)
+    #FIXME: file seems to be broken. NP.Matter should be a scaler.
+    nall = numpy.array([0, sum(attrs['NP.Matter']), 0, 0, 0, 0], dtype='u8')
+    gadget['Nall'] = numpy.uint32(nall)
+    gadget['NallHW'] = numpy.uint32(nall >> 32)
     gadget['BoxSize'] = attrs['BoxSize']
-    gadget['HubbleParam'] = attrs['H0'] / 100
+    gadget['HubbleParam'] = attrs['H0'] / 100.
     gadget['Omega0'] = attrs['Omega_M']
     gadget['OmegaLambda'] = attrs['Omega_DE']
     gadget['Massarr'] = [0, attrs['ParticleMass.Matter'], 0, 0, 0, 0]
