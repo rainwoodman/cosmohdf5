@@ -1,3 +1,23 @@
+"""
+An abstract reading interface for striped cosmohdf5 snapshot files.
+
+Requires h5py, numpy, and glob.
+
+Here is a full example
+
+.. code :: python
+
+    file = File(['cosmohdf5-v1.*.hdf5']
+
+    print(file['Header'].attrs)
+
+    ds = Dataset(file['Matter/'], ['Velocity', 'Position'])
+
+    print(ds.size)
+    print(ds.dtype)
+    print(ds[0:10])
+
+"""
 
 import h5py
 import numpy
@@ -5,7 +25,31 @@ import glob
 
 class File:
     def __init__(self, paths, dataset='/'):
-        """ An abstact representation of a sequence of cosmohdf5 files """
+        """ An abstact representation of a sequence of cosmohdf5 files.
+
+
+            Parameters
+            ----------
+            paths : string or list.
+                If a list, then it shall be the full list of files for the snapshot.
+                If a string, it is a glob pattern (with '*' and '?') that matches against
+                all files.
+
+            dataset : string
+                The root directory for getting subfiles and datasets.
+
+            Notes
+            -----
+
+            A file object allows getting members as subfiles via the
+            standard python indexing syntax. For example
+
+            .. code :: python
+                
+                file['Matter/']
+
+                file['Header']
+        """
         if not isinstance(paths, (list, tuple)):
             # assume it is a string
             paths = list(glob.glob(paths))
@@ -20,6 +64,11 @@ class File:
 
         self.nfiles =  len(self.paths)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        pass
 
     def get_datagroup(self, file_num):
         return h5py.File(self.paths[file_num])[self.dataset]
@@ -29,6 +78,16 @@ class File:
 
 class Dataset:
     def __init__(self, file, columns):
+        """
+            Viewing certain columns from a File collection as an array like object.xi
+
+            The object support standard python slicing with 1 indexing dimension
+            along the row dimension of the data.
+
+            Only continous indexing is supported currently.
+
+        """
+
         self.file = file
         dtype = []
 
