@@ -3,7 +3,8 @@
 An interface for accessing the file level striped HDF5 files carrying the
 DESI cosmosim WG schema.
 
-The schema is defined as:
+The schema is defined as [c.f. DESI cosmosim WG meeting notes]
+
 ```
 
 name: "/Matter/Position", shape: (N,3), dtype: float64, units: comoving Mpc/h
