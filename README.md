@@ -3,7 +3,23 @@
 An interface for accessing the file level striped HDF5 files carrying the
 DESI cosmosim WG schema.
 
-The schema is defined as [c.f. DESI cosmosim WG meeting notes]
+Currently the interface only supports reading of existing files.
+
+Plan to add interface for creating new snapshots. This will be handy
+for creating converters into this format.
+
+After that we can add more converters to and from this format. 
+
+Finally this will allow an application that can automatically convert from
+any format to any format using the cosmohdf5 format as an intermediate representation.
+
+
+Standard hierarchical schema for Cosmology Simulations
+------------------------------------------------------
+
+DESI cosmosim WG made an attempt to define a hierarchical schema for cosmology simulations.
+
+This is the current version of the schema:
 
 ```
 
@@ -22,7 +38,7 @@ NP.Matter = 16777216000
 Omega_M = 0.3137721
 Omega_DE = 0.6862279
 ParticleMass.Matter [units of Msun/h]
-NumFilesPerSnapshot
+NumFilesPerSnapshot [HDF5 specific. Number of file stripes in the data set ]
 
 [these vary with time/epoch]
 GrowthRatio = D(z)/D(z=0) at z
@@ -38,14 +54,18 @@ f_growth = [0.9999998530991349 ]
 HubbleNow = [107523.5 ]
 ```
 
+The schema itself does not require an HDF5 storage backend.
+Any hierachical storage format with attribute support can be used to store this schema.
 
-Currently the interface only supports reading of existing files.
+In this sense the WG's standardlization effort may be incorporated into simulation software that
+does not support an HDF5 storage backend.
 
-Plan to add interface for creating new snapshots. This will be handy
-for creating converters into this format.
+And converters between these formats are trivial.
 
-After that we can add more converters to and from this format. 
+HDF5 specific
+-------------
 
-Finally this will allow an application that can automatically convert from
-any format to any format using the cosmohdf5 format as an intermediate representation.
+A storage object is striped into many files. All of the files shall have identical structure and differ only
+in the data. An header attribute 'NumFilesPerSnapshot' stores the total number of file stripes.
+It shall be consistent with the total number of files.
 
