@@ -49,6 +49,7 @@ def convert_header(header):
     attrs['InitialRedshift'] = 1 / a - 1
     attrs['Redshift'] = 1 / a - 1
     attrs['ParticleMass.Matter'] = header.attrs['MassTable'][1]
+    attrs['NP.Matter'] = header.attrs['TotNumPart'][1]
     attrs['Omega_M'] = header.attrs['OmegaM']
     attrs['Omega_DE'] = header.attrs['OmegaLambda']
     attrs['GrowthRatio'] = numpy.nan
