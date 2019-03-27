@@ -52,9 +52,9 @@ def convert_header(header):
     attrs['NP.Matter'] = header.attrs['TotNumPart'][1]
     attrs['Omega_M'] = header.attrs['OmegaM']
     attrs['Omega_DE'] = header.attrs['OmegaLambda']
-    attrs['GrowthRatio'] = numpy.nan
-    attrs['f_growth'] = numpy.nan
-    attrs['HubbleNow'] = numpy.nan
+    attrs['GrowthRatio'] = header.attrs['GrowthFactor']
+    attrs['f_growth']   header.attrs['GrowthRate']
+    attrs['HubbleNow'] = header.attrs['HubbleE'] * header.attrs['HubbleParam'] * 100.
     attrs['RSDFactor'] = header.attrs['RSDFactor']
 
     return attrs
